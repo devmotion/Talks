@@ -1,8 +1,6 @@
-# Probabilistic Modelling with Turing.jl
+# Calibration analysis of probabilistic models in Julia
 
-This talk I gave at the meetup of the Julia User Group Munich on 5 July 2021.
-
-A HTM
+This talk I gave at [JuliaCon 2021](https://juliacon.org/2021/).
 
 ## Note
 

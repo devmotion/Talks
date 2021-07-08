@@ -1115,7 +1115,7 @@ md"""
 
 # ╔═╡ 4ea0159b-c71b-4adb-9b46-205ce6a85b06
 html"""
-<h3><center>See you at JuliaCon!</center></h3>
+<h1/><h3><center>See you at JuliaCon!</center></h3>
 
 <img src="https://juliacon.org/assets/2021/img/world_1400.png"/>
 """

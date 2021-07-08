@@ -1,8 +1,8 @@
 # EllipticalSliceSampling.jl: MCMC with Gaussian priors
 
-This talk I gave at [JuliaCon 2021](https://juliacon.org/2021/).
+[![](https://img.shields.io/badge/show-HTML-brightgreen.svg)](https://talks.widmann.dev/2021/07/ellipticalslicesampling/)
 
-A HTM
+This talk I gave at [JuliaCon 2021](https://juliacon.org/2021/).
 
 ## Note
 

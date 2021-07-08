@@ -1,8 +1,8 @@
 # Probabilistic Modelling with Turing.jl
 
-This talk I gave at the meetup of the Julia User Group Munich on 5 July 2021.
+[![](https://img.shields.io/badge/show-HTML-brightgreen.svg)](https://talks.widmann.dev/2021/07/turing/)
 
-A HTM
+This talk I gave at the meetup of the Julia User Group Munich on 5 July 2021.
 
 ## Note
 

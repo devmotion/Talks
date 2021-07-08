@@ -1,5 +1,7 @@
 # Calibration analysis of probabilistic models in Julia
 
+[![](https://img.shields.io/badge/show-HTML-brightgreen.svg)](https://talks.widmann.dev/2021/07/calibration/)
+
 This talk I gave at [JuliaCon 2021](https://juliacon.org/2021/).
 
 ## Note

@@ -1,0 +1,4 @@
+# redirect rules for domain aliases
+https://talks.devmotion.de/* https://talks.widmann.dev/:splat 301!
+https://talks.davidwidmann.de/* https://talks.widmann.dev/:splat 301!
+https://talks.david-widmann.de/* https://talks.widmann.dev/:splat 301!

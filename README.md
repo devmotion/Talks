@@ -10,3 +10,6 @@ This repository is a collection of some of my talks.
   - [Calibration analysis of probabilistic models with Julia](https://talks.widmann.dev/2021/07/calibration/) ([JuliaCon 2021](https://juliacon.org/2021/))
   - [EllipticalSliceSampling.jl: MCMC with Gaussian priors](https://talks.widmann.dev/2021/07/ellipticalslicesampling/) ([JuliaCon 2021](https://juliacon.org/2021/))
   - [Probabilistic Modelling with Turing](https://talks.widmann.dev/2021/07/turing/) ([Julia User Group Munich](https://www.meetup.com/Julia-User-Group-Munich/))
+- February 2022:
+  - [Scientific computing with Julia](https://talks.widmann.dev/2022/02/julia/) ([Polygon Math Club at the American University in Bulgaria](https://www.facebook.com/MathPolygonAUBG))
+

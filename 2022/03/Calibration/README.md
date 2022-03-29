@@ -1,6 +1,6 @@
 # Calibration of probabilistic predictive models
 
-[![](https://img.shields.io/badge/show-HTML-brightgreen.svg)](https://talks.widmann.dev/2022/03/calibration.pdf)
+[![](https://img.shields.io/badge/show-PDF-brightgreen.svg)](https://talks.widmann.dev/2022/03/calibration.pdf)
 
 This talk I gave at the [Machine Learning Journal Club of the Gatsby unit at UCL](https://www.ucl.ac.uk/gatsby/).
 

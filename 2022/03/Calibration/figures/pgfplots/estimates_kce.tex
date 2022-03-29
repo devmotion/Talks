@@ -1,0 +1,256 @@
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size={3 by 3}, xlabels at={edge bottom}, ylabels at={edge left}, horizontal sep={0.1\linewidth}, vertical sep={0.03\linewidth}}, no markers, tick label style={font={\tiny}}, grid={major}, title style={align={center}}, width={0.3\linewidth}, height={0.17\linewidth}, every x tick scale label/.style={at={{(1,0)}}, anchor={west}}, ylabel style={font={\small}}]
+    \nextgroupplot[title={$\mathbf{M1}$}, ylabel={$\biasedestimator$}]
+    \addplot+[ybar interval, fill={Dark2-A!30!white}]
+        table[row sep={\\}]
+        {
+            \\
+            0.0005  61.0  \\
+            0.001  2724.0  \\
+            0.0015  4376.0  \\
+            0.002  2111.0  \\
+            0.0025  597.0  \\
+            0.003  108.0  \\
+            0.0035  20.0  \\
+            0.004  3.0  \\
+            0.0045  0.0  \\
+        }
+        ;
+    \draw[solid, thick, Dark2-B] ({axis cs:0.001791065804877401,0}|-{rel axis cs:0,1})--({axis cs:0.001791065804877401,0}|-{rel axis cs:0,0});
+    \draw[dashed, thick, Dark2-C] ({axis cs:-8.624308735909002e-6,0}|-{rel axis cs:0,1})--({axis cs:-8.624308735909002e-6,0}|-{rel axis cs:0,0});
+    \addplot+[draw={none}]
+        coordinates {
+            (-8.624308735909002e-6,0)
+        }
+        ;
+    \nextgroupplot[title={$\mathbf{M2}$}]
+    \addplot+[ybar interval, fill={Dark2-A!30!white}]
+        table[row sep={\\}]
+        {
+            \\
+            0.05  3.0  \\
+            0.06  89.0  \\
+            0.07  558.0  \\
+            0.08  1735.0  \\
+            0.09  2790.0  \\
+            0.1  2643.0  \\
+            0.11  1483.0  \\
+            0.12  532.0  \\
+            0.13  133.0  \\
+            0.14  31.0  \\
+            0.15  3.0  \\
+            0.16  0.0  \\
+        }
+        ;
+    \draw[solid, thick, Dark2-B] ({axis cs:0.09976616408194146,0}|-{rel axis cs:0,1})--({axis cs:0.09976616408194146,0}|-{rel axis cs:0,0});
+    \draw[dashed, thick, Dark2-C] ({axis cs:0.09655136747590723,0}|-{rel axis cs:0,1})--({axis cs:0.09655136747590723,0}|-{rel axis cs:0,0});
+    \addplot+[draw={none}]
+        coordinates {
+            (0.09655136747590723,0)
+        }
+        ;
+    \nextgroupplot[title={$\mathbf{M3}$}]
+    \addplot+[ybar interval, fill={Dark2-A!30!white}]
+        table[row sep={\\}]
+        {
+            \\
+            0.015  10.0  \\
+            0.016  95.0  \\
+            0.017  448.0  \\
+            0.018  1317.0  \\
+            0.019  2147.0  \\
+            0.02  2364.0  \\
+            0.021  1773.0  \\
+            0.022  1087.0  \\
+            0.023  469.0  \\
+            0.024  195.0  \\
+            0.025  68.0  \\
+            0.026  22.0  \\
+            0.027  4.0  \\
+            0.028  1.0  \\
+            0.029  0.0  \\
+        }
+        ;
+    \draw[solid, thick, Dark2-B] ({axis cs:0.020511313103935783,0}|-{rel axis cs:0,1})--({axis cs:0.020511313103935783,0}|-{rel axis cs:0,0});
+    \draw[dashed, thick, Dark2-C] ({axis cs:0.015170498621422451,0}|-{rel axis cs:0,1})--({axis cs:0.015170498621422451,0}|-{rel axis cs:0,0});
+    \addplot+[draw={none}]
+        coordinates {
+            (0.015170498621422451,0)
+        }
+        ;
+    \nextgroupplot[ylabel={$\unbiasedestimator$}]
+    \addplot+[ybar interval, fill={Dark2-A!30!white}]
+        table[row sep={\\}]
+        {
+            \\
+            -0.001  37.0  \\
+            -0.0008  438.0  \\
+            -0.0006  1286.0  \\
+            -0.0004  1968.0  \\
+            -0.0002  1919.0  \\
+            0.0  1607.0  \\
+            0.0002  1132.0  \\
+            0.0004  704.0  \\
+            0.0006  423.0  \\
+            0.0008  242.0  \\
+            0.001  122.0  \\
+            0.0012  72.0  \\
+            0.0014  22.0  \\
+            0.0016  20.0  \\
+            0.0018  4.0  \\
+            0.002  4.0  \\
+            0.0022  0.0  \\
+        }
+        ;
+    \draw[solid, thick, Dark2-B] ({axis cs:-8.624308735909002e-6,0}|-{rel axis cs:0,1})--({axis cs:-8.624308735909002e-6,0}|-{rel axis cs:0,0});
+    \draw[dashed, thick, Dark2-C] ({axis cs:-8.624308735909002e-6,0}|-{rel axis cs:0,1})--({axis cs:-8.624308735909002e-6,0}|-{rel axis cs:0,0});
+    \addplot+[draw={none}]
+        coordinates {
+            (-8.624308735909002e-6,0)
+        }
+        ;
+    \nextgroupplot
+    \addplot+[ybar interval, fill={Dark2-A!30!white}]
+        table[row sep={\\}]
+        {
+            \\
+            0.05  11.0  \\
+            0.06  151.0  \\
+            0.07  882.0  \\
+            0.08  2126.0  \\
+            0.09  2995.0  \\
+            0.1  2302.0  \\
+            0.11  1076.0  \\
+            0.12  352.0  \\
+            0.13  92.0  \\
+            0.14  12.0  \\
+            0.15  1.0  \\
+            0.16  0.0  \\
+        }
+        ;
+    \draw[solid, thick, Dark2-B] ({axis cs:0.09655136747590723,0}|-{rel axis cs:0,1})--({axis cs:0.09655136747590723,0}|-{rel axis cs:0,0});
+    \draw[dashed, thick, Dark2-C] ({axis cs:0.09655136747590723,0}|-{rel axis cs:0,1})--({axis cs:0.09655136747590723,0}|-{rel axis cs:0,0});
+    \addplot+[draw={none}]
+        coordinates {
+            (0.09655136747590723,0)
+        }
+        ;
+    \nextgroupplot
+    \addplot+[ybar interval, fill={Dark2-A!30!white}]
+        table[row sep={\\}]
+        {
+            \\
+            0.01  15.0  \\
+            0.011  124.0  \\
+            0.012  622.0  \\
+            0.013  1666.0  \\
+            0.014  2431.0  \\
+            0.015  2279.0  \\
+            0.016  1541.0  \\
+            0.017  823.0  \\
+            0.018  314.0  \\
+            0.019  129.0  \\
+            0.02  42.0  \\
+            0.021  12.0  \\
+            0.022  2.0  \\
+            0.023  0.0  \\
+        }
+        ;
+    \draw[solid, thick, Dark2-B] ({axis cs:0.015170498621422451,0}|-{rel axis cs:0,1}) -- ({axis cs:0.015170498621422451,0}|-{rel axis cs:0,0});
+    \draw[dashed, thick, Dark2-C] ({axis cs:0.015170498621422451,0}|-{rel axis cs:0,1}) -- ({axis cs:0.015170498621422451,0}|-{rel axis cs:0,0});
+    \addplot+[draw={none}]
+        coordinates {
+            (0.015170498621422451,0)
+        }
+        ;
+    \nextgroupplot[ylabel={$\linearestimator$}]
+    \addplot+[ybar interval, fill={Dark2-A!30!white}]
+        table[row sep={\\}]
+        {
+            \\
+            -0.03  1.0  \\
+            -0.025  13.0  \\
+            -0.02  117.0  \\
+            -0.015  555.0  \\
+            -0.01  1580.0  \\
+            -0.005  2580.0  \\
+            0.0  2825.0  \\
+            0.005  1594.0  \\
+            0.01  564.0  \\
+            0.015  145.0  \\
+            0.02  21.0  \\
+            0.025  5.0  \\
+            0.03  0.0  \\
+        }
+        ;
+    \draw[solid, thick, Dark2-B] ({axis cs:0.00016041013856191264,0}|-{rel axis cs:0,1}) -- ({axis cs:0.00016041013856191264,0}|-{rel axis cs:0,0});
+    \draw[dashed, thick, Dark2-C] ({axis cs:-8.624308735909002e-6,0}|-{rel axis cs:0,1}) -- ({axis cs:-8.624308735909002e-6,0}|-{rel axis cs:0,0});
+    \addplot+[draw={none}]
+        coordinates {
+            (-8.624308735909002e-6,0)
+        }
+        ;
+    \nextgroupplot
+    \addplot+[ybar interval, fill={Dark2-A!30!white}]
+        table[row sep={\\}]
+        {
+            \\
+            0.03  10.0  \\
+            0.04  52.0  \\
+            0.05  211.0  \\
+            0.06  603.0  \\
+            0.07  1159.0  \\
+            0.08  1823.0  \\
+            0.09  1930.0  \\
+            0.1  1743.0  \\
+            0.11  1273.0  \\
+            0.12  679.0  \\
+            0.13  325.0  \\
+            0.14  134.0  \\
+            0.15  40.0  \\
+            0.16  13.0  \\
+            0.17  5.0  \\
+            0.18  0.0  \\
+        }
+        ;
+    \draw[solid, thick, Dark2-B] ({axis cs:0.09655648558846669,0}|-{rel axis cs:0,1})--({axis cs:0.09655648558846669,0}|-{rel axis cs:0,0});
+    \draw[dashed, thick, Dark2-C] ({axis cs:0.09655136747590723,0}|-{rel axis cs:0,1})--({axis cs:0.09655136747590723,0}|-{rel axis cs:0,0});
+    \addplot+[draw={none}]
+        coordinates {
+            (0.09655136747590723,0)
+        }
+        ;
+    \nextgroupplot
+    \addplot+[ybar interval, fill={Dark2-A!30!white}]
+        table[row sep={\\}]
+        {
+            \\
+            -0.05  8.0  \\
+            -0.04  39.0  \\
+            -0.03  202.0  \\
+            -0.02  591.0  \\
+            -0.01  1214.0  \\
+            0.0  1892.0  \\
+            0.01  2229.0  \\
+            0.02  1800.0  \\
+            0.03  1136.0  \\
+            0.04  564.0  \\
+            0.05  220.0  \\
+            0.06  80.0  \\
+            0.07  21.0  \\
+            0.08  2.0  \\
+            0.09  2.0  \\
+            0.1  0.0  \\
+        }
+        ;
+    \draw[solid, thick, Dark2-B] ({axis cs:0.015050934500161551,0}|-{rel axis cs:0,1}) -- ({axis cs:0.015050934500161551,0}|-{rel axis cs:0,0});
+    \draw[dashed, thick, Dark2-C] ({axis cs:0.015170498621422451,0}|-{rel axis cs:0,1}) -- ({axis cs:0.015170498621422451,0}|-{rel axis cs:0,0});
+    \addplot+[draw={none}]
+        coordinates {
+            (0.015170498621422451,0)
+        }
+        ;
+\end{groupplot}
+\node[anchor=north, yshift=3mm] at ($(group c1r3.west |- group c1r3.outer south)!0.5!(group c3r3.east |- group c3r3.outer south)$){calibration error estimate};
+\node[anchor=south, rotate=90] at ($(group c1r1.north -| group c1r1.outer west)!0.5!(group c1r3.south -| group c1r3.outer west)$){\# runs};
+\end{tikzpicture}

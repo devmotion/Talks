@@ -1,0 +1,32 @@
+# Emacs
+.auctex-auto/
+
+# direnv
+.direnv/
+
+# Caches
+.cache/
+tikzcache/
+
+# Specific files
+figures/penguins.png
+pgfshell_penguins.out
+pgfshell_penguins.sh
+
+# LaTeX
+_minted-*/
+*.aux
+*.auxlock
+*.bbl
+*.bcf
+*.blg
+*.fls
+*.listing
+*.log
+*.nav
+*.pdf
+*.run.xml
+*.snm
+*.toc
+*.vrb
+*.fdb_latexmk

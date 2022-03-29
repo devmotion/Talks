@@ -1,0 +1,1322 @@
+\documentclass[aspectratio=169,hyperref={pdfpagelabels=false,pageanchor=false,bookmarks=false}]{beamer}
+
+% Beamer theme
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+
+% Math support
+\usepackage{mathtools}
+
+% Fonts
+\usepackage[no-math]{fontspec}
+\usepackage{microtype}
+\defaultfontfeatures{Ligatures=TeX}
+% Open source alternative to Gill Sans in UU's official layout
+\usepackage[sfdefault]{gillius2}
+\setmonofont{JuliaMono}[
+Contextuals=Alternate,
+Scale=MatchLowercase,
+Extension=.ttf,
+UprightFont=*-Regular,
+BoldFont=*-Bold,
+ItalicFont=*-RegularItalic,
+BoldItalicFont=*-BoldItalic,
+]
+\usepackage{arevmath}
+\usepackage{emoji}
+\setemojifont{Noto Color Emoji}
+\setbeamerfont{footnote}{size=\tiny}
+
+% Languages
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+
+% Graphics
+\usepackage{graphicx}
+
+% Tables
+\usepackage{array}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\usepackage{booktabs}
+
+% Colors
+\def\UseCMYK{true}
+\usepackage{UUcolorPantone}
+
+% Boxes
+\usepackage[export]{adjustbox}
+\usepackage{tcolorbox}
+\tcbset{shield externalize}
+\tcbuselibrary{skins,raster}
+\tcbset{coltitle=black,fonttitle=\bfseries\large\scshape}
+\newenvironment{uuredbox}[1][]%
+{\begin{tcolorbox}[colback=uured!15,colframe=uured,#1]}%
+  {\end{tcolorbox}}
+\newenvironment{uugreenbox}[1][]%
+{\begin{tcolorbox}[colframe=gronskastark,#1]}%
+  {\end{tcolorbox}}
+\newenvironment{uuyellowbox}[1][]%
+{\begin{tcolorbox}[colback=blondsvag,colframe=blondstark,#1]}%
+  {\end{tcolorbox}}
+\newenvironment{uubluebox}[1][]%
+{\begin{tcolorbox}[colback=gryningmellan,colframe=gryningstark,#1]}%
+  {\end{tcolorbox}}
+\newenvironment{uugraybox}[1][]%
+{\begin{tcolorbox}[colback=uulightgrey,colframe=black,#1]}%
+  {\end{tcolorbox}}
+
+% Tikz settings
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,patterns,positioning,calc,overlay-beamer-styles}
+\usegdlibrary{force}
+\usetikzlibrary{arrows,shapes,fadings}
+\tikzset{
+  block/.style={
+    draw,
+    rectangle,
+    minimum height=1cm,
+    minimum width=3cm, align=center
+  },
+  line/.style={->,>=latex'}
+}
+
+% Load PGFPlots and enable externalization
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{groupplots,fillbetween,units}
+% Tufte style
+\makeatletter
+\def\pgfplotsdataxmin{\pgfplots@data@xmin}
+\def\pgfplotsdataxmax{\pgfplots@data@xmax}
+\def\pgfplotsdataymin{\pgfplots@data@ymin}
+\def\pgfplotsdataymax{\pgfplots@data@ymax}
+\makeatother
+\pgfplotsset{
+  range frame/.style={
+    every axis legend/.append style={draw=none, fill=none, legend cell align=left},
+    every axis/.append style={thick},
+    tick style={thick,black},
+    tick align=outside,
+    scaled ticks=false,
+    enlargelimits=false,
+    axis lines*=left,
+    line cap=round,
+    clip=false,
+    axis line shift=5pt,
+    colorbar style={
+      tick align=outside,
+      ytick pos=right,
+    },
+  }
+}
+% Colorbrewer
+\usepgfplotslibrary{colorbrewer}
+\pgfplotsset{
+  % Initialize Dark2-8:
+  cycle list/Dark2-8,
+  % Combine it with ’mark list*’:
+  cycle multiindex* list={
+    mark list*\nextlist
+    Dark2-8\nextlist
+    linestyles\nextlist
+  },
+}
+\usepgfplotslibrary{external}
+\tikzset{external/only named=true}
+\directlua{os.execute("mkdir -p tikzcache")}
+\tikzexternalize[prefix=tikzcache/]
+% Adjust font sizes
+\pgfplotsset{
+  every axis legend/.append style={font=\footnotesize},
+  every tick label/.append style={font=\footnotesize},
+  every axis label/.append style={font=\footnotesize},
+  every axis title/.append style={font=\small},
+}
+
+% Fix externalization of overlays (one image per overlay)
+\makeatletter
+\newcommand*{\overlaynumber}{\number\beamer@slideinframe}
+\tikzset{
+  beamer externalizing/.style={%
+    execute at end picture={%
+      \tikzifexternalizing{%
+        \ifbeamer@anotherslide
+        \pgfexternalstorecommand{\string\global\string\beamer@anotherslidetrue}%
+        \fi
+      }{}%
+    }%
+  },
+  external/optimize=false
+}
+\let\orig@tikzsetnextfilename=\tikzsetnextfilename
+\renewcommand\tikzsetnextfilename[1]{\orig@tikzsetnextfilename{#1-\overlaynumber}}
+\makeatother
+\tikzset{every picture/.style={beamer externalizing}}
+
+% Highlighting
+\newcommand\hl[1]{\begingroup\bfseries\boldmath\color{red}#1\endgroup}
+
+% References
+\usepackage[style=authortitle-icomp,doi=false,url=false,isbn=false,uniquename=init,giveninits=true]{biblatex}
+\addbibresource{references.bib}
+\DeclareCiteCommand{\citeauthorfirstlast}
+{\boolfalse{citetracker}%
+  \boolfalse{pagetracker}%
+  \DeclareNameAlias{labelname}{given-family}%
+  \usebibmacro{prenote}}
+{\ifciteindex
+  {\indexnames{labelname}}
+  {}%
+  \printnames{labelname}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+% Footnotes
+\usepackage{hanging}
+\setbeamertemplate{footnote}{%
+  \usebeamercolor{footnote}%
+  \hangpara{2em}{1}\makebox[2em][r]{\insertfootnotemark}\insertfootnotetext\par%
+}
+\usepackage{fontawesome}
+\newcommand{\reffootnote}[1]{%
+  \let\oldthefootnote=\thefootnote%
+  \addtocounter{footnote}{-1}%
+  \renewcommand{\thefootnote}{}%
+  \footnote{\hspace{-2em}\hbox to 2em{\hfil\faBook\hspace{0.2em}}\fullcite{#1}}%
+  \let\thefootnote=\oldthefootnote%
+}
+
+\newenvironment{refitemize}%
+{%
+  \noindent\rule{\textwidth}{0.4pt}\par%
+  \vspace*{-\parskip}%
+  \setbeamertemplate{itemize item}{\leavevmode\tiny\includegraphics[raise=-2pt,width=5pt]{beamericonarticle}}%
+  \setbeamerfont{itemize/enumerate body}{size=\tiny}%
+  \setlength\topsep{0pt}%NEW
+  \setlength\partopsep{0pt}%NEW
+  \setlength\itemsep{0pt}%NEW
+  \settowidth{\leftmargini}{\usebeamertemplate{itemize item}}%
+  \addtolength{\leftmargini}{\labelsep}%
+  \begin{itemize}%
+          }{%
+  \end{itemize}%
+  \par\ignorespacesafterend%
+}
+\newcommand\refitem[1]{\item \fullcite{#1}}
+
+% Code
+\tcbuselibrary{minted,breakable}
+\newtcblisting{juliaconsnippet}[1][]{%
+  blank,
+  listing engine=minted,
+  minted language={jlcon},
+  minted options={autogobble,breaklines,mathescape,fontsize=\footnotesize},
+  listing only,
+  breakable,
+  sharp corners,
+  colback=black!5,
+  boxrule=1pt,
+  leftrule=0pt,
+  rightrule=0pt,
+  left=0pt,
+  top=0pt,
+  bottom=0pt,
+  right=0pt,
+  #1
+}
+
+% Quotes (should be loaded after minted)
+\usepackage{csquotes}
+
+% Draw scratch counts
+\usepackage{luamplib}
+\newcommand{\scratchcount}[1]{%
+  \begin{mplibcode}
+    beginfig(0);
+    n:= #1;
+    height := 3/5\mpdim{\normalbaselineskip} ;
+    span := 1/3 * height ;
+    drift := 1/10 * height ;
+    pickup pencircle scaled (1/12 * height) ;
+    def d = (uniformdeviate drift) enddef ;
+    for i := 1 upto n :
+    draw
+    if (i mod 5)=0 : ((-d-4.5span,d)--(+d-0.5span,height-d))
+    else : ((-d,+d)--(+d,height-d)) fi
+    shifted (span*i,d-drift) ;
+    endfor;
+    endfig;
+  \end{mplibcode}}
+
+
+\DeclareMathOperator{\law}{law}
+\DeclareMathOperator{\ECE}{ECE}
+\DeclareMathOperator{\Dir}{Dir}
+\DeclareMathOperator{\Categorical}{Cat}
+
+% there is an issue with \widehat and \DeclareMathOperator
+\makeatletter
+\newcommand*{\biasedestimator}{\widehat{\operator@font SKCE}_{\operator@font b}}
+\newcommand*{\unbiasedestimator}{\widehat{\operator@font SKCE}_{\operator@font uq}}
+\newcommand*{\linearestimator}{\widehat{\operator@font SKCE}_{\operator@font ul}}
+\makeatother
+
+\setbeamersize{description width=2cm}
+% Adapted from default in beamer/base/themes/inner/beamerinnerthemedefault.sty
+% without section number
+\setbeamertemplate{section page}
+{
+  \begingroup
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+  \endgroup
+}
+
+% Download picture from the web, if necessary
+\IfFileExists{figures/penguins.png}{}{%
+  \write18{curl -o ./figures/penguins.png --create-dirs https://raw.githubusercontent.com/allisonhorst/palmerpenguins/69530276d74b99df81cc385f4e95c644da69ebfa/man/figures/lter_penguins.png}
+}
+
+\title{Calibration of probabilistic predictive models}
+\subtitle{Machine Learning Journal Club, Gatsby Unit}
+\date{28 March 2022}
+\author{David Widmann}
+\titlegraphic{%
+	\begin{tikzpicture}[overlay,remember picture]
+		\node[xshift=-1cm,yshift=-1cm,inner sep=0pt,outer sep=0pt] at (current page.north east) {\includegraphics[height=1.25cm]{figures/UU.pdf}};
+	\end{tikzpicture}%
+}
+\institute{%
+  \href{https://www.it.uu.se/}{Department of Information Technology, Uppsala University, Sweden}\\%
+  \href{https://www.math.uu.se/research/cim/}{Centre for Interdisciplinary Mathematics, Uppsala University, Sweden}%
+}
+
+% Useful for adding email address to title page:
+% https://tex.stackexchange.com/a/376474
+\def\vfilll{\vskip 0pt plus 1filll minus 0pt }
+
+\begin{document}
+\NoHyper
+
+\begin{frame}
+  \vfilll
+  \titlepage
+  \vfilll
+  {%
+    \usebeamerfont{institute}%
+    Contact: \href{mailto:david.widmann@it.uu.se}{\texttt{david.widmann@it.uu.se}}%
+  }
+\end{frame}
+
+% Introduce myself
+\begin{frame}{About me}
+  % Summary
+  \only<1>{%
+    \begin{columns}
+      \begin{column}{0.75\textwidth}
+        \begin{block}{TL;DR \emoji{book}}
+          \begin{itemize}
+            \item 31 year old PhD student at Uppsala University
+            \item On parental leave since September 2021
+            \item Research on uncertainty quantification of probabilistic models
+            \item Active member in the Julia community
+          \end{itemize}
+        \end{block}
+      \end{column}
+      \begin{column}{0.25\textwidth}
+        \includegraphics[width=\linewidth]{figures/profile.jpg}
+      \end{column}
+    \end{columns}}
+  % Education
+  \only<2-3>{%
+    \begin{block}{Education \emoji{graduation-cap}}
+      \begin{description}
+        \item[2017---now:] PhD student (Uppsala University)
+        \item[2016---2017:] MSc Mathematics (TU Munich)
+        \item[2013---2016:] BSc Mathematics (TU Munich)
+        \item[2007---2013:] Human medicine (LMU and TU Munich)
+      \end{description}
+    \end{block}%
+    % Research interests
+    \onslide<3>{%
+      \begin{block}{Research interests \emoji{microscope}}
+        \begin{itemize}
+          \item Research topic: "Uncertainty-aware deep learning"
+          \item Statistics, probability theory, scientific machine learning, and computer science
+          \item Julia programming, e.g., \href{https://sciml.ai}{SciML} and \href{https://turing.ml}{Turing}
+        \end{itemize}
+      \end{block}}}
+\end{frame}
+
+\begin{frame}{Papers}
+  \begin{itemize}
+    \item \fullcite{Vaicenavicius2019}
+          \begin{itemize}
+            \item Focus on multi-class classification, calibration lenses, calibration estimation and tests with ECE
+          \end{itemize}
+          \pause
+    \item \fullcite{Widmann2019}
+          \begin{itemize}
+            \item Calibration errors and tests for multi-class classification based on matrix-valued kernels
+          \end{itemize}
+          \pause
+    \item \fullcite{Widmann2021}
+          \begin{itemize}
+            \item Calibration errors and tests for probabilistic predictive models based on scalar-valued kernels
+          \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\section{Calibration: Motivation and definition}
+\frame{\sectionpage}
+
+\begin{frame}{Example: Weather forecasts}
+  \begin{columns}[t]
+    \begin{column}{0.5\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{figures/forecaster.png}
+      \end{figure}
+    \end{column}%
+    \pause%
+    \begin{column}{0.5\textwidth}
+      \enquote{%
+        Those forecasts which were marked \enquote{doubtful} were the
+        \emph{best I could frame} under the circumstances. \textelp{} If I
+        make no distinction between these and others, I degrade the whole.}
+      \vskip5mm
+      \hspace*\fill{\small ---\citeauthorfirstlast{Cooke1906B}}%
+    \end{column}%
+  \end{columns}
+  \reffootnote{Cooke1906B}
+\end{frame}
+
+\begin{frame}{Motivation: Classification example}
+  \only<1>{%
+    \begin{figure}
+      \tikzsetnextfilename{penguins}
+      \begin{tikzpicture}
+        \begin{axis}[
+          range frame,
+          legend pos=outer north east,
+          xlabel=bill length,
+          ylabel=flipper length,
+          use units,
+          x unit=mm,
+          y unit=mm,
+          height=0.7\textheight,
+          scatter/classes={
+            Adelie={mark=square*, Dark2-B},
+            Chinstrap={mark=triangle*, Dark2-C},
+            Gentoo={mark=*, Dark2-A}
+          },
+          ]
+
+          \addplot+ [
+          scatter,
+          fill opacity=0,
+          only marks,
+          scatter src=explicit symbolic,
+          prefix = pgfshell_,
+          id = penguins,
+          ] table [
+          x=bill_length_mm, y=flipper_length_mm, meta=species, header=true
+          ] shell {
+            curl -s https://raw.githubusercontent.com/allisonhorst/palmerpenguins/69530276d74b99df81cc385f4e95c644da69ebfa/inst/extdata/penguins.csv | awk '
+            BEGIN { FS = ","; }
+            NR==1 {
+              for (i=1; i<=NF; i++) {
+                f[$i] = i;
+              };
+            }
+            {
+              bill = $(f["bill_length_mm"]);
+              flipper = $(f["flipper_length_mm"]);
+              species = $(f["species"]);
+              if (bill != "NA" && flipper != "NA" && species != "NA") {
+                print bill, flipper, species;
+              };
+            }
+            '
+          };
+          \legend{Adélie, Chinstrap, Gentoo};
+        \end{axis}
+      \end{tikzpicture}
+    \end{figure}
+    \reffootnote{Gorman2014}%
+  }%
+  \only<2-3>{%
+    \begin{figure}
+      \centering
+      \begin{tikzpicture}
+        \node (model) at (0, 0)
+        {\includegraphics[height=0.15\textheight]{figures/model.pdf}};
+        \node[above=0.8cm of model, font=\large\bfseries] (label) {Model $P$};
+        \node[left=1cm of model] (input) {\includegraphics[width=0.2\textwidth]{figures/measure.pdf}};
+        \node[anchor=base, font=\large\bfseries] at (input|-label.base) {Input $X$};
+        \draw[line] (input) -- (model);
+        \node[right=1cm of model] (prediction)
+        {
+          \includegraphics[width=0.3\textwidth]{figures/penguins.png}
+        };
+        \node [font=\large\bfseries, align=center] at (label-|prediction) {Prediction $P_X$\\(distribution of target $Y$)};
+        \node [below=0mm of prediction, font=\tiny, anchor=west] {Artwork by \texttt{@allison\_horst}};
+        \draw [line] (model) -- (prediction);
+      \end{tikzpicture}
+    \end{figure}
+    \onslide<3->{
+      \begin{block}{Example: Prediction $P_{X}$}
+        \begin{center}
+          \begin{tabular}{@{}ccc@{}}
+            \textcolor{Dark2-B}{\texttt{Adélie}} & \textcolor{Dark2-C}{\texttt{Chinstrap}} & \textcolor{Dark2-A}{\texttt{Gentoo}} \\ \midrule
+            80\% & 10\% & 10\% \\
+          \end{tabular}
+        \end{center}
+      \end{block}
+    }%
+  }
+\end{frame}
+
+\begin{frame}{Calibration: Intuition}
+  \begin{figure}
+    \begin{tikzpicture}
+      \node (model) at (0, 0)
+      {\includegraphics[height=0.15\textheight]{figures/model.pdf}};
+      \node[above=0.5cm of model, font=\large\bfseries] (label) {Model $P$};
+      \onslide<2->{%
+        \node [left=1cm of model, name=feature] {%
+          Input \alt<2-4>{$x_1$}{\alt<5-7>{$x_2$}{\alt<8-10>{$x_3$}{$x_i$}}}};
+        \draw [line] (feature) -- (model);
+      }
+      \visible<3,4,6,7,9-11>{%
+        \node[right=1cm of model, align=left, minimum height=0.15\textwidth] (prediction)
+        {%
+          \begin{tabular}{@{}ccc@{}}
+            \textcolor{Dark2-B}{\texttt{Adelie}} & \textcolor{Dark2-A}{\texttt{Chinstrap}} & \textcolor{Dark2-C}{\texttt{Gentoo}} \\ \midrule
+            80\% & 10\% & 10\% \\
+          \end{tabular}};
+        \draw [line] (model) -- (prediction);
+        \node [font=\large\bfseries, anchor=base, align=center] at (label.base-|prediction) {Prediction \alt<3-4>{$P_{x_{1}}$}{\alt<6,7>{$P_{x_{2}}$}{\alt<9,10>{$P_{x_{3}}$}{$P_{x_{i}}$}}}};
+      }
+    \end{tikzpicture}
+  \end{figure}
+
+  \onslide<4->{%
+    \begin{block}{Empirical frequency}
+      \begin{center}
+        \directlua{math.randomseed(101)}
+        \begin{tabular}{@{}ccc@{}}
+          \textcolor{Dark2-B}{\texttt{Adelie}} & \textcolor{Dark2-A}{\texttt{Chinstrap}} & \textcolor{Dark2-C}{\texttt{Gentoo}} \\ \midrule
+          \alt<4-9>{\scratchcount{1}}{\alt<10>{\scratchcount{2}}{\scratchcount{8} \ldots}} & \alt<-6>{}{\alt<7-10>{\scratchcount{1}}{\scratchcount{2} \ldots}} & \alt<4-10>{}{\scratchcount{1} \ldots} \\
+        \end{tabular}
+      \end{center}
+    \end{block}
+  }%
+\end{frame}
+
+\begin{frame}{Calibration}
+  \begin{tcbraster}[raster columns=2,raster equal height=rows]
+    \onslide<2->{%
+      \begin{tcolorbox}[blankest, raster multicolumn=2, halign=flush center, bottom=0.5cm]
+        \large\hl{Predictions consistent with empirically observed frequencies?}
+      \end{tcolorbox}}%
+    \begin{tcolorbox}[blanker, title={Prediction $P_{X}$}, center title, valign=center, remember as=B]
+      \begin{center}
+        \begin{tabular}{@{}ccc@{}}
+          \textcolor{Dark2-B}{\texttt{Adélie}} & \textcolor{Dark2-C}{\texttt{Chinstrap}} & \textcolor{Dark2-A}{\texttt{Gentoo}} \\ \midrule
+          80\% & 10\% & 10\% \\
+        \end{tabular}
+      \end{center}
+    \end{tcolorbox}
+    \begin{tcolorbox}[blanker, title={Empirical frequency $\law(Y \,|\, P_X)$}, center title, valign=center, remember as=A]
+      \directlua{math.randomseed(101)}
+      \begin{center}
+        \begin{tabular}{@{}ccc@{}}
+          \textcolor{Dark2-B}{\texttt{Adélie}} & \textcolor{Dark2-C}{\texttt{Chinstrap}} & \textcolor{Dark2-A}{\texttt{Gentoo}} \\ \midrule
+          \scratchcount{8} \ldots & \scratchcount{2} \ldots & \scratchcount{1} \ldots \\
+        \end{tabular}
+      \end{center}
+    \end{tcolorbox}
+  \end{tcbraster}
+  \onslide<2->{%
+    \begin{tikzpicture}[remember picture, overlay]
+      \path (A) -- node [font=\bfseries\boldmath\Huge, color=red, align=center, midway] {$\stackrel{\text{?}}{=}$} (B);
+    \end{tikzpicture}}
+  \onslide<3->{%
+    \begin{definition}
+      A probabilistic predictive model $P$ is calibrated if
+      \begin{equation*}
+        \law(Y \,|\, P_X) = P_X \qquad \text{almost surely}.
+      \end{equation*}
+    \end{definition}
+  }
+  \onslide<4->{%
+    \begin{tcolorbox}[blankest, halign=flush center]
+      Notion captures also weaker confidence calibration
+    \end{tcolorbox}}
+  \reffootnote{Widmann2019}
+  \reffootnote{Widmann2021}
+\end{frame}
+
+\begin{frame}{Binary classification: Reliability diagram}
+  \only<1-4>{%
+    \begin{figure}
+      \tikzsetnextfilename{reliability_diagram-\overlaynumber}
+      \begin{tikzpicture}
+        \begin{axis}[
+          range frame,
+          axis equal image,
+          height = 0.7\textheight,
+          xlabel = prediction,
+          ylabel = empirical frequency,
+          xmin = 0, xmax = 1,
+          ymin = 0, ymax = 1,
+          domain = 0:1,
+          ]
+          \addplot+ [black, dashed, mark=none, samples=2] {x};
+          \addplot+ [Dark2-A, solid, mark=none, visible on=<2->, samples=100] {x*(1+(x-1.5)*(x-0.6))};
+          [sloped]
+          node [pos=0.3, above, visible on=<3->] {underconfident};
+          node [pos=0.85, below, visible on=<4->] {overconfident};
+        \end{axis}
+      \end{tikzpicture}
+    \end{figure}}%
+  \only<5>{%
+    \begin{figure}
+      \tikzsetnextfilename{reliability_diagram_variant}
+      \begin{tikzpicture}
+        \begin{axis}[
+          range frame,
+          height = 0.7\textheight,
+          xlabel = prediction,
+          ylabel = deviation,
+          xmin = 0, xmax = 1,
+          domain = 0:1,
+          ]
+          \addplot+ [black, dashed, mark=none, samples=2] {0};
+          \addplot+ [Dark2-A, solid, mark=none, samples=100] {x*(x-1.5)*(x-0.6)};
+          node [pos=0.3, above] {underconfident};
+          node [pos=0.8, sloped, below] {overconfident};
+        \end{axis}
+      \end{tikzpicture}
+    \end{figure}}%
+  \reffootnote{Vaicenavicius2019}
+\end{frame}
+
+\begin{frame}{Multi-class classification: All scores matter!}
+  \begin{tcbraster}[raster columns=1]
+    \begin{tcolorbox}[blankest]
+      \begin{center}
+        \begin{tikzpicture}
+          \node[minimum height=0.11\textwidth, inner sep=2mm] (image) at (0, 0)
+          {\begin{tabular}{@{}ccc@{}}
+             \includegraphics[height=3mm]{figures/car0.pdf} & \includegraphics[height=3mm]{figures/car1.pdf} & \includegraphics[height=3mm]{figures/car2.pdf} \\
+             \includegraphics[height=3mm]{figures/car3.pdf} & \includegraphics[height=3mm]{figures/car4.pdf} & $\cdots$ \\
+           \end{tabular}};
+
+         \onslide<2->{%
+           \node[right=1cm of image, inner sep=2mm] (model)
+           {\includegraphics[height=\dimexpr0.11\textwidth-4mm\relax]{figures/model.pdf}};
+           \draw [->] (image) -- (model);
+         }%
+
+         \onslide<3->{%
+           \node[right=1cm of model, minimum height=0.11\textwidth, align=center] (prediction)
+           {\begin{tabular}{@{}ccc@{}}
+              \texttt{object} & \texttt{human} & \texttt{animal} \\ \midrule
+              80\% & 0\% & 20\% \\
+            \end{tabular}};
+          \draw [->] (model) -- (prediction);
+        }%
+      \end{tikzpicture}
+    \end{center}
+  \end{tcolorbox}
+  \onslide<4->{%
+    \begin{uubluebox}
+      \begin{center}
+        Common calibration evaluation techniques consider only the
+        most-confident score
+      \end{center}
+    \end{uubluebox}
+  }%
+  \onslide<5->{%
+    \begin{uuredbox}[enhanced, fontlower=\footnotesize, sidebyside, lower separated=false, righthand width=0.3\textwidth]
+      Common approaches do not distinguish between the two predictions
+      even though the control actions based on these might be very
+      different!
+
+      \tcblower
+
+      \begin{center}
+        \begin{tabular}{@{}ccc@{}} \toprule
+          \texttt{object} & \texttt{human} & \texttt{animal} \\ \midrule
+          \hl{80\%} & 0\% & 20\% \\
+          \hl{80\%} & 20\% & 0\% \\ \bottomrule
+        \end{tabular}
+      \end{center}
+    \end{uuredbox}
+  }%
+\end{tcbraster}
+\reffootnote{Vaicenavicius2019}
+\end{frame}
+
+\begin{frame}{Weaker notions of calibration and calibration lenses}
+  \begin{block}{Weaker notions}
+    Weaker notions of calibration such as confidence calibration or calibration of marginal classifiers can be analyzed by considering calibration of induced predictive models.
+  \end{block}
+  \pause
+  \begin{definition}[Calibration lenses]
+    Let $\psi$ be a measureable function that defines targets $Z := \psi(Y, P_{X})$.
+    Then $\psi$ induces a predictive model $Q$ for targets $Z$ with predictions
+    \begin{equation*}
+      Q_{X} := \law\big(\psi(\tilde{Y}, P_{X})\big)
+    \end{equation*}
+    where $\tilde{Y} \sim P_{X}$.
+    Function $\psi$ is called a \emph{calibration lens}.
+  \end{definition}
+  \reffootnote{Vaicenavicius2019}
+\end{frame}
+
+\begin{frame}{Beyond classification}
+  \begin{definition}[reminder]
+    A probabilistic predictive model $P$ is calibrated if
+    \begin{equation*}
+      \law(Y \,|\, P_X) = P_X \qquad \text{almost surely}.
+    \end{equation*}
+  \end{definition}
+
+  \pause
+
+  \begin{block}{Examples of other target spaces}
+    \begin{tcbraster}[blankest, raster columns=4,raster equal height=rows, halign=flush center]
+      \begin{tcolorbox}
+        $\mathbb{N}_0$\\[\baselineskip]
+        \begin{tikzpicture}[scale=0.5]
+          \begin{axis}[
+            range frame,
+            xlabel=$X$,
+            ylabel=$Y$,
+            height=0.6\textheight,
+            domain=-20:60,
+            bar width=2,
+            ]
+            \pgfmathsetseed{1234}
+            \addplot+ [ybar, no marks, samples=20] ({x + 0.1*rand}, {round(50*rnd)});
+          \end{axis}
+        \end{tikzpicture}
+      \end{tcolorbox}
+      \begin{tcolorbox}
+        $\mathbb{R}^d$\\[\baselineskip]
+        \begin{tikzpicture}[scale=0.5]
+          \begin{axis}[
+            range frame,
+            xlabel=$X$,
+            ylabel=$Y$,
+            height=0.6\textheight,
+            domain=-20:60,
+            ]
+            \addplot+ [no marks, samples=2] {5 + 0.1*x};
+
+            \pgfmathsetseed{1234}
+            \addplot+ [only marks, mark=*, mark size=0.75, samples=70] ({x + 0.1*rand}, {5 + 0.1*x + 3*rand});
+          \end{axis}
+        \end{tikzpicture}
+      \end{tcolorbox}
+      \begin{tcolorbox}
+        graphs\\[\baselineskip]
+        \begin{tikzpicture}[scale=0.5]
+          \pgfmathsetseed{1234}
+          \graph [spring layout, nodes={draw, scale=0.5, circle, fill=Dark2-B, as=}, n=25, p=0.3] {
+            subgraph I_n;
+            subgraph G_np
+          };
+        \end{tikzpicture}
+      \end{tcolorbox}
+      \begin{tcolorbox}
+        protein structure\\[\baselineskip]
+        \includegraphics[height=0.25\textheight]{figures/protein.png}%
+      \end{tcolorbox}
+    \end{tcbraster}
+  \end{block}
+  \reffootnote{Widmann2021}
+\end{frame}
+
+\section{Calibration errors}
+\frame{\sectionpage}
+
+\begin{frame}{Expected calibration error (ECE)}
+  \begin{definition}
+    The expected calibration error ($\operatorname{ECE}$) with respect to
+    distance measure $d$ is defined as
+    \begin{equation*}
+      \operatorname{ECE}_d := \mathbb{E}_{P_X} d\big(P_X, \law(Y\,|\, P_X)\big).
+    \end{equation*}
+  \end{definition}
+  \pause
+  \begin{block}{Choice of distance measure $d$}
+    \begin{itemize}[<+->]
+      \item For classification typically (semi-)metrics on the probability simplex
+            (e.g., cityblock, Euclidean, or squared Euclidean distance)
+      \item For general probabilistic predictive models \hl{statistical divergences}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Statistical divergences}
+  \begin{definition}
+    Let $\mathcal{P}$ be a space of probability distributions.
+    A function $d \colon \mathcal{P} \times \mathcal{P} \to \mathbb{R}$ that satisfies
+    \begin{itemize}
+      \item $d(P, Q) \geq 0$ for all $P, Q \in \mathcal{P}$,
+      \item $d(P, Q) = 0$ if and only if $P = Q$,
+    \end{itemize}
+    is a statistical divergence.
+  \end{definition}
+  \pause
+  \begin{block}{Note}
+    \begin{itemize}
+      \item $d$ does not need to be symmetric
+      \item $d$ does not need to satisfy the triangle inequality
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Examples}
+    \begin{itemize}
+      \item $f$-divergences, e.g., Kullback-Leibler divergence or total variation distance
+      \item Wasserstein distance
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Scoring rules: Definition}
+  \begin{definition}
+    The expected score of a probabilistic predictive model $P$ is defined as
+    \begin{equation*}
+      \operatorname{\mathbb{E}}_{P_X, Y} s(P_X, Y)
+    \end{equation*}
+    where \hl{scoring rule $s(p, y)$} is the reward of prediction $p$ if the true outcome is $y$.
+  \end{definition}
+  \pause
+  \begin{block}{Examples for classification}
+    \begin{itemize}
+      \item Brier score: $s(p, y) = - \int_{\Omega} \big((\delta_{y} - p)^2\big)(\mathrm{d}\omega)$
+      \item Logarithmic score: $s(p, y) = \log p\big(\{y\}\big)$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Scoring rules: Decomposition}
+  For proper scoring rules
+  \begin{equation*}
+    \begin{split}
+      \operatorname{\mathbb{E}}_{P_X, Y} s(P_X, Y) ={}& \alt<1>{\vphantom{\underbrace{\operatorname{\mathbb{E}}_{P_X} d(\law(Y), \law(Y \,|\, P_X))}_{\mathclap{\text{resolution}}}}\operatorname{\mathbb{E}}_{P_X} d(\law(Y), \law(Y \,|\, P_X))}{\underbrace{\operatorname{\mathbb{E}}_{P_X} d(\law(Y), \law(Y \,|\, P_X))}_{\mathclap{\text{resolution}}}} \\
+      &{-} \alt<1-2>{\vphantom{\underbrace{\operatorname{\mathbb{E}}_{P_X} d(P_X, \law(Y \,|\, P_X))}_{\mathclap{\text{\hl{calibration}}}}}\operatorname{\mathbb{E}}_{P_X} d(P_X, \law(Y \,|\, P_X))}{\underbrace{\operatorname{\mathbb{E}}_{P_X} d(P_X, \law(Y \,|\, P_X))}_{\mathclap{\text{\hl{calibration}}}}} {-} \alt<1-3>{\vphantom{\underbrace{S(\law(Y), \law(Y))}_{\mathclap{\text{uncertainty of }Y}}}S(\law(Y), \law(Y))}{\underbrace{S(\law(Y), \law(Y))}_{\mathclap{\text{uncertainty of }Y}}}
+    \end{split}
+  \end{equation*}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Expected score of $P$ under $Q$}
+        \vspace*{-\baselineskip}
+        \begin{equation*}
+          S(P, Q) := \int_{\Omega} s(P, \omega) \,Q(\mathrm{d}\omega)
+        \end{equation*}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Score divergence}
+        \vspace*{-\baselineskip}
+        \begin{equation*}
+          \vphantom{S(P, Q) := \int_{\Omega} s(P, \omega) \,Q(\mathrm{d}\omega)}d(P, Q) = S(Q, Q) - S(P, Q)
+        \end{equation*}
+      \end{block}
+    \end{column}
+  \end{columns}%
+  \onslide<5>{%
+    \begin{center}
+      \hl{Models can trade off calibration for resolution!}
+    \end{center}}
+  \reffootnote{Broecker2009}
+\end{frame}
+
+\begin{frame}{An alternative definition of calibration}
+  \begin{theorem}
+    A probabilistic predictive model $P$ is calibrated if
+    \begin{equation*}
+      (P_X, Y) \stackrel{d}{=} (P_X, Z_X),
+    \end{equation*}
+    where $Z_X \sim P_X$.
+  \end{theorem}
+  \onslide<2>{%
+    \begin{uugreenbox}[halign=flush center]
+      Calibration error as distance between $\law\big((P_X, Y)\big)$ and $\law\big((P_X, Z_X)\big)$
+    \end{uugreenbox}}
+  \reffootnote{Widmann2021}
+\end{frame}
+
+\begin{frame}{Calibration error: Integral probability metric}
+  \begin{tcolorbox}[blankest]
+    \vspace*{-\baselineskip}
+    \begin{equation*}
+      \operatorname{CE}_{\mathcal{F}} := \sup_{f \in \mathcal{F}} \Big| \operatorname{\mathbb{E}}_{P_X,Y} f(P_X,Y) - \operatorname{\mathbb{E}}_{P_X,Z_X} f(P_X,Z_X)\Big|
+    \end{equation*}
+  \end{tcolorbox}
+  \onslide<2->{%
+    \begin{block}{Examples}
+      \begin{itemize}[<+->]
+        \item 1-Wasserstein distance: $\mathcal{F} = \{f \colon \|f\|_{\operatorname{Lip}} \leq 1\}$
+        \item Total variation distance: $\mathcal{F} = \{f \colon \|f\|_{\infty} \leq 1\}$
+      \end{itemize}
+    \end{block}%
+  }
+  \onslide<3->{%
+    \begin{uugreenbox}[halign=flush center]
+      Common choices of $\operatorname{ECE}_d$ in classification can be formulated in this way
+    \end{uugreenbox}%
+  }
+  \reffootnote{Widmann2019}
+  \reffootnote{Widmann2021}
+\end{frame}
+
+\begin{frame}{Kernel calibration error: Maximum mean discrepancy (MMD)}
+  \begin{tcolorbox}[blankest]
+    Choose $\mathcal{F} = \{f \in \mathcal{H}\colon \|f\|_{\mathcal{H}} \leq 1\}$ for some reproducing kernel Hilbert space $\mathcal{H}$
+  \end{tcolorbox}
+  \onslide<2->{%
+    \begin{block}{Reproducing kernel Hilbert space (RKHS)}
+      \begin{itemize}
+        \item<2-> Hilbert space of functions that satisfy $f \text{ close to } g \Rightarrow f(x) \text{ close to } g(x)$
+        \item<3-> Possesses a positive-definite function $k$ as reproducing kernel
+      \end{itemize}
+    \end{block}%
+  }
+  \onslide<4->{%
+    \begin{definition}
+      The kernel calibration error ($\operatorname{KCE}$) of a model $P$ with respect to kernel $k$ is defined as
+      \begin{equation*}
+        \operatorname{KCE}^2_k := \operatorname{CE}^2_{\mathcal{F}} =
+        \int k\big((p, y), (\tilde{p}, \tilde{y})\big) \, \mu\big(\mathrm{d}(p, y)\big) \mu\big(\mathrm{d}(\tilde{p}, \tilde{y})\big),
+      \end{equation*}
+      where $\mu = \law\big((P_X, Y)\big) - \law\big((P_X, Z_X)\big)$.
+    \end{definition}%
+  }
+  \reffootnote{Widmann2019}
+  \reffootnote{Widmann2021}
+\end{frame}
+
+\begin{frame}{Choice of kernel}
+  \begin{block}{Observations}
+    \begin{itemize}[<+->]
+      \item Kernel $k$ defined on the product space of predictions and targets
+      \item In multi-class classification, $k$ can be identified with a matrix-valued kernel on the space of predictions
+      \item For specific kernel choices, $Z_{X}$ can be integrated out analytically
+      \item Otherwise numerical integration methods (e.g., Monte Carlo integration) can be used to integrate out $Z_{X}$
+      \item Suggestive to use tensor product kernels $k = k_{\mathcal{P}} \otimes k_{\mathcal{Y}}$, where $k_{\mathcal{P}}$ and $k_{\mathcal{Y}}$ are kernels on the space of predictions and targets, respectively
+    \end{itemize}
+  \end{block}
+  \reffootnote{Widmann2019}
+  \reffootnote{Widmann2021}
+\end{frame}
+
+\begin{frame}{Tensor product kernel}
+  \begin{lemma}
+    Let $k_{\mathcal{Y}}$ be a characteristic kernel on the target space and $k_{\mathcal{P}}$ be a kernel on the space of predictions that is non-zero almost surely.
+    Then the $\operatorname{KCE}$ of model $P$ with respect to kernel $k = k_{\mathcal{P}} \otimes k_{\mathcal{Y}}$ is zero iff model $P$ is calibrated.
+  \end{lemma}
+  \pause
+  \begin{block}{Construction of $k_{\mathcal{P}}$ with Hilbertian metrics}
+    \begin{itemize}[<+->]
+      \item For Hilbertian metrics of form $d_{\mathcal{P}}(p, \tilde{p}) = \|\phi(p) - \phi(\tilde{p})\|_{2}$
+            for some $\phi \colon \mathcal{P} \to \mathbb{R}^{d}$,
+            \begin{equation}\label{eq:kp}
+              k_{\mathcal{P}}(p, \tilde{p}) = \exp{\big( -\lambda d^{\nu}_{\mathcal{P}}(p, \tilde{p})\big)},
+            \end{equation}
+            is valid kernel on the space of predictions for $\lambda > 0$ and $\nu \in (0, 2]$
+      \item Parameterization of predictions gives rise to $\phi$ naturally
+      \item For many mixture models, Hilbertian metrics of model components can be lifted to Hilbertian metric of mixture models
+    \end{itemize}
+  \end{block}
+  \reffootnote{Widmann2021}
+\end{frame}
+
+\section{Estimation of calibration errors}
+\frame{\sectionpage}
+
+\begin{frame}{Estimation of calibration errors}
+  \begin{block}{Task}
+    Estimate the calibration error of a model $P$ from a validation dataset
+    $(X_{i}, Y_{i})_{i=1,\ldots,n}$ of features and corresponding targets.
+  \end{block}
+  \pause
+  \begin{block}{Dataset of predictions and targets sufficient}
+    \begin{itemize}
+      \item Calibration (errors) defined based only on predictions and targets
+      \item Estimation can be performed with dataset $(P_{X_{i}}, Y_{i})$ of predictions and corresponding targets instead
+      \item Highlights that structure of features and model is not relevant for calibration estimation
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{ECE: Estimation}
+  \begin{block}{Problem}
+    The estimation of $\law(Y \,|\, P_X)$ is challenging.
+  \end{block}
+  \pause
+  \begin{block}{Binning predictions}
+    \begin{itemize}
+      \item Common approach in classification
+      \item Often leads to \hl{biased and inconsistent} estimators
+    \end{itemize}
+  \end{block}
+  \reffootnote{Vaicenavicius2019}
+  \reffootnote{Widmann2019}
+\end{frame}
+
+\begin{frame}{ECE: Experiments}
+  \begin{block}{10-class classification}
+    For three models $\mathbf{M1}$, $\mathbf{M2}$ and $\mathbf{M3}$,
+    $10^4$ synthetic datasets $(P_{X_i}, Y_i)_{i=1,\ldots,250}$ are sampled according to
+    \begin{itemize}
+      \item $P_{X_i} = \Categorical(p_i)$ with $p_i \sim \Dir(0.1, \ldots, 0.1)$,
+      \item<2-> $Y_i$ conditionally on $P_{X_i}$ from
+            \setlength\abovedisplayshortskip{0pt}\setlength\abovedisplayskip{0pt}%
+            \setlength\belowdisplayshortskip{0pt}\setlength\belowdisplayskip{0pt}%
+            \begin{equation*}
+              \mathbf{M1} \colon P_{X_i}, \qquad \mathbf{M2} \colon 0.5 P_{X_i} + 0.5 \delta_{1}, \qquad \mathbf{M3} \colon \operatorname{U}(\{1, \ldots, 10\}).
+            \end{equation*}
+    \end{itemize}
+    \vspace*{-\baselineskip}
+    \onslide<3->{Model $\mathbf{M1}$ is calibrated, and models $\mathbf{M2}$ and $\mathbf{M3}$ are uncalibrated.}
+  \end{block}
+  \onslide<4->{%
+    \tikzsetnextfilename{estimates_ece}
+    \input{figures/pgfplots/estimates_ece.tex}%
+  }
+  \reffootnote{Widmann2019}
+\end{frame}
+
+\begin{frame}{Kernel calibration error: Estimation}
+  \begin{uugreenbox}[left=0pt]
+    \begin{itemize}[<+->]
+      \item For the MMD unbiased and consistent estimators are available
+      \item Variance can be reduced by marginalizing out $Z_X$
+    \end{itemize}
+  \end{uugreenbox}
+  \onslide<3->{%
+    \tikzsetnextfilename{estimates_kce}
+    \input{figures/pgfplots/estimates_kce.tex}%
+  }
+  \reffootnote{Widmann2019}
+\end{frame}
+
+\section{Calibration tests}
+\frame{\sectionpage}
+
+\begin{frame}{Problems with calibration errors}
+  \begin{uuredbox}[halign=flush center, left=0pt]
+    \begin{itemize}[<+->]
+      \item Calibration errors have no meaningful unit or scale
+      \item Different calibration errors rank models differently
+      \item Calibration error estimators are random variables
+    \end{itemize}
+  \end{uuredbox}
+\end{frame}
+
+\begin{frame}{Calibration tests}
+  \begin{tcbraster}[raster columns=1]
+    \onslide<2->{%
+      \begin{tcolorbox}[blankest, halign=flush center]
+        Null hypothesis $H_0 := \text{\enquote{model is calibrated}}$
+      \end{tcolorbox}%
+    }
+    \begin{tcolorbox}[blankest, halign=flush center]
+      \tikzsetnextfilename{null_hypothesis-\overlaynumber}
+      \begin{tikzpicture}[
+        declare function={normal(\m,\s)=1/(2*\s*sqrt(pi))*exp(-(x-\m)^2/(2*\s^2));},
+        declare function={binormal(\ma,\sa,\mb,\sb,\p)=(\p*normal(\ma,\sa)+(1-\p)*normal(\mb,\sb));}
+        ]
+
+        \begin{axis}[
+          range frame,
+          domain = -0.1:0.2,
+          no marks,
+          xlabel = calibration error estimate,
+          ylabel = density,
+          grid=major,
+          ymin = 0,
+          tick label style={font=\tiny},
+          label style={font=\small},
+          width = 0.73\textwidth,
+          height = 0.5\textheight,
+          legend pos=outer north east,
+          legend cell align=left,
+          legend style=
+          {
+            fill=none,
+            draw=none,
+            inner sep={0pt},
+            font=\small,
+          }
+          ]
+
+          \draw[Dark2-A, thick] ({axis cs:0.07, 0}|-{rel axis cs:0,1}) -- ({axis cs:0.07,0}|-{rel axis cs:0,0}) node [at end, above, anchor=south east, sloped, font=\small] {observed};
+          \draw[Dark2-B, thick] ({axis cs:0, 0}|-{rel axis cs:0,1}) -- ({axis cs:0,0}|-{rel axis cs:0,0}) node [at end, above, anchor=south east, sloped, font=\small] {calibrated};
+
+          % mixture model of normal distributions
+          \addplot+ [color=Dark2-B, dashed, thick, visible on=<3->, samples=31, smooth, name path=A] {binormal(-0.05,0.01,0.05,0.03,0.5)};
+          \addlegendentry[visible on=<3->]{distribution under $H_0$};
+
+          % indicate p-value
+          \path [name path=B] ({rel axis cs:0,0}|-{axis cs:0,0}) -- ({rel axis cs:1,0}|-{axis cs:0,0});
+          \addplot+ [draw=Dark2-C, pattern color=Dark2-C, pattern={north east lines}, visible on=<4->] fill between [of=A and B, soft clip={domain=0.07:0.2}];
+          \addlegendentry[visible on=<4->]{p-value};
+        \end{axis}
+      \end{tikzpicture}
+    \end{tcolorbox}
+    \onslide<5->{%
+      \begin{uugreenbox}[halign=flush center]
+        Reject $H_0$ if p-value is small
+      \end{uugreenbox}%
+    }
+  \end{tcbraster}
+  \reffootnote{Broecker2007}
+  \reffootnote{Vaicenavicius2019}
+\end{frame}
+
+\begin{frame}{Consistency resampling}
+  \begin{tcbraster}[raster columns=1]
+    \begin{tcolorbox}[blankest, halign=flush center]
+      \begin{tikzpicture}
+        \node[rectangle, draw, fill=blondsvag] (predictions) at (0, 0) {%
+          \begin{tabular}{@{}cc@{}}
+            $y_1$ & $P_{x_1}$ \\
+            $\vdots$ & $\vdots$ \\
+            $y_n$ & $P_{x_n}$ \\
+          \end{tabular}};
+
+        \node[above=2mm of predictions, anchor=base] {Original dataset};
+
+        \onslide<2->{%
+          \node[rectangle, draw, fill=blondsvag, right=3.25cm of predictions] (resample) {%
+            \begin{tabular}{@{}cc@{}}
+              $y_{i_1}$ & $P_{x_{i_1}}$ \\
+              $\vdots$ & $\vdots$ \\
+              $y_{i_n}$ & $P_{x_{i_n}}$ \\
+            \end{tabular}};
+          \draw [line] (predictions) -- node[above] {\footnotesize $i_j \sim \operatorname{U}(\{1, \ldots, n\})$} (resample);
+        }
+
+        \onslide<3->{%
+          \node[rectangle, draw, fill=blondsvag, right=3.25cm of resample] (consistency) {%
+            \begin{tabular}{@{}cc@{}}
+              $\tilde{y}_{i_1}$ & $P_{x_{i_1}}$ \\
+              $\vdots$ & $\vdots$ \\
+              $\tilde{y}_{i_n}$ & $P_{x_{i_n}}$ \\
+            \end{tabular}};
+          \draw [line] (resample) -- node[above] {\footnotesize $\tilde{y}_j \sim P_{x_j}$} (consistency);
+          \node[above=2mm of consistency, anchor=base] {Resampled dataset under $H_0$};
+        }
+        \onslide<4->{%
+          \path (predictions) -- node [below=2cm, align=center, name=pvalue] {%
+            \begin{uugreenbox}[width=0.5\linewidth,halign=flush center]
+              estimate p-value
+            \end{uugreenbox}} (consistency);
+          \draw [line] (predictions.south) -- (pvalue);
+          \draw [line] (consistency.south) -- (pvalue);
+        }
+      \end{tikzpicture}
+    \end{tcolorbox}
+  \end{tcbraster}
+  \reffootnote{Broecker2007}
+\end{frame}
+
+\begin{frame}{Consistency bars}
+  \begin{tcolorbox}[blankest, halign=flush center]
+    \includegraphics<1>[width=0.45\textwidth]{figures/consistency_bars/reliability_diagram_without_bars.png}
+    \only<2>{%
+      \includegraphics[width=0.45\textwidth]{figures/consistency_bars/reliability_diagram_with_bars_1.png}%
+      \hspace{0.5cm}%
+      \includegraphics[width=0.45\textwidth]{figures/consistency_bars/reliability_diagram_with_bars_2.png}%
+    }
+  \end{tcolorbox}
+  \reffootnote{Broecker2007}
+\end{frame}
+
+\begin{frame}{Variant}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/consistency_bars/variant.png}
+  \end{figure}
+  \reffootnote{Vaicenavicius2019}
+\end{frame}
+
+\begin{frame}{Kernel calibration error: Distribution-free tests}
+  \begin{tcolorbox}[blankest,halign=flush center]
+    \hl{Upper bound} the p-value
+  \end{tcolorbox}
+  \onslide<2->{%
+    \tikzsetnextfilename{pvalues_distribution_free}
+    \input{figures/pgfplots/pvalues_distribution_free.tex}%
+  }
+  \reffootnote{Widmann2019}
+\end{frame}
+
+\begin{frame}{Kernel calibration error: Asymptotic tests}
+  \begin{tcolorbox}[blankest, halign=flush center]
+    \hl{Approximate} the p-value based on the \hl{asymptotic} distribution
+  \end{tcolorbox}
+  \onslide<2->{%
+    \tikzsetnextfilename{pvalues_asymptotic}
+    \input{figures/pgfplots/pvalues_asymptotic.tex}%
+  }
+  \reffootnote{Widmann2019}
+\end{frame}
+
+\section{Calibration: Software packages}
+\frame{\sectionpage}
+
+\begin{frame}[fragile]{\texttt{CalibrationAnalysis.jl}}
+  \begin{block}{Summary}
+    \begin{itemize}
+      \item Suite for analyzing calibration of probabilistic predictive models
+      \item Written in Julia, with interfaces in Python (\texttt{pycalibration}) and R (\texttt{rcalibration})
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Features}
+    \begin{itemize}
+      \item Supports classification and regression models
+      \item Reliability diagrams (\texttt{ReliabilityDiagrams.jl})
+      \item Estimation of calibration errors such as ECE and KCE (\texttt{CalibrationErrors.jl})
+      \item Calibration tests (\texttt{CalibrationTests.jl})
+      \item Integration with Julia ecosystem: Supports \texttt{Plots.jl} and \texttt{Makie.jl}, \texttt{KernelFunctions.jl}, and \texttt{HypothesisTests.jl}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Calibration analysis: Penguins example}
+  We train a naive Bayes classifier of penguin species based on bill depth, bill length, flipper length, and body mass.
+  \begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/penguins/penguins.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Binary predictions}
+  \begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/penguins/confidence.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Reliability diagram}
+  \begin{columns}[t]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Code}
+        \begin{juliaconsnippet}
+julia> using CalibrationAnalysis, CairoMakie
+
+julia> reliability(
+           confidence,
+           outcome;
+           binning=EqualMass(; n=15),
+           deviation=true,
+           consistencybars=ConsistencyBars(),
+      )
+        \end{juliaconsnippet}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Polished result}
+        \begin{figure}
+          \centering
+          \includegraphics[width=\textwidth]{figures/penguins/reliability_diagram.pdf}
+        \end{figure}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Expected calibration error: Code}
+  \begin{juliaconsnippet}
+julia> ece = ECE(UniformBinning(5), TotalVariation());
+
+julia> ece(confidence, outcome)
+0.06594437403598197
+
+julia> ece(predictions, observations)
+0.15789651955832515
+  \end{juliaconsnippet}
+\end{frame}
+
+
+\begin{frame}[fragile]{Kernel calibration error: Code}
+  \begin{juliaconsnippet}
+julia> kernel = GaussianKernel() ⊗ WhiteKernel();
+
+julia> skce = SKCE(kernel);
+
+julia> skce(predictions, observations)
+0.0032631144705774404
+
+julia> skce = SKCE(kernel; unbiased=false);
+
+julia> skce(predictions, observations)
+0.004202113116841622
+
+julia> skce = SKCE(kernel; blocksize=5);
+
+julia> skce(predictions, observations)
+-0.005037270862051889
+  \end{juliaconsnippet}
+\end{frame}
+
+\begin{frame}[fragile]{Calibration test: Code}
+  \begin{juliaconsnippet}
+julia> AsymptoticSKCETest(kernel, predictions, observations)
+Asymptotic SKCE test
+--------------------
+Population details:
+    parameter of interest:   SKCE
+    value under h_0:         0.0
+    point estimate:          0.00326311
+
+Test summary:
+    outcome with 95% confidence: reject h_0
+    one-sided p-value:           0.0150
+
+Details:
+    test statistic: -0.0009060378940361157
+
+julia> test = ConsistencyTest(ece, predictions, observations);
+
+julia> pvalue(test; bootstrap_iters=10_000)
+0.0188
+  \end{juliaconsnippet}
+\end{frame}
+
+\begin{frame}{Additional resources}
+  \begin{itemize}
+    \item Online documentation: \url{https://devmotion.github.io/CalibrationErrors.jl/}
+    \item Talk at JuliaCon 2021: \url{https://youtu.be/PrLsXFvwzuA}
+          \begin{figure}
+            \centering
+            \includegraphics[height=0.5\textheight]{figures/youtube.jpg}
+          \end{figure}
+          Slides available at \url{https://talks.widmann.dev/2021/07/calibration/}
+  \end{itemize}
+\end{frame}
+
+\section{Concluding remarks}
+\frame{\sectionpage}
+
+\begin{frame}{Important takeaways}
+  \begin{itemize}
+    \item More fine-grained analysis of calibration can be important
+    \item MMD-like kernel calibration error can be applied to probabilistic models beyond classification
+    \item Estimators of kernel calibration error have appealing properties
+    \item Calibration errors and reliability diagrams can be misleading
+  \end{itemize}
+\end{frame}
+
+\end{document}

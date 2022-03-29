@@ -13,4 +13,4 @@ This repository is a collection of some of my talks.
 - February 2022:
   - [Scientific computing with Julia](https://talks.widmann.dev/2022/02/julia/) ([Polygon Math Club at the American University in Bulgaria](https://www.facebook.com/MathPolygonAUBG))
 - March 2022:
-  - [Calibration of probabilistic predictive models](https://talks.widmann.dev/2022/03/calibration/) ([Machine Learning Journal Club of the Gatsby Unit at UCL](https://www.ucl.ac.uk/gatsby/))
+  - [Calibration of probabilistic predictive models](https://talks.widmann.dev/2022/03/calibration.pdf) ([Machine Learning Journal Club of the Gatsby Unit at UCL](https://www.ucl.ac.uk/gatsby/))

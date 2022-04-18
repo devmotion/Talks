@@ -36,6 +36,7 @@
           pkgs.julia-bin
           pkgs.ncurses
           pkgs.noto-fonts-emoji
+          pkgs.python3.pkgs.pygments
           pkgs.which
           tex
         ];

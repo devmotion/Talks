@@ -1,6 +1,6 @@
 # Talks
 
-[![Deployment Status](https://github.com/devmotion/Talks/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/devmotion/Talks/actions/workflows/deploy.yml?query=branch%3Amain)
+[![Deployment Status](https://github.com/devmotion/Talks/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/devmotion/Talks/actions/workflows/deploy.yml?query=branch%3Amain)
 
 This repository is a collection of some of my talks.
 

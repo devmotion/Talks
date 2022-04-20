@@ -1,0 +1,15 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ site ]
+  pull_request:
+    branches: [ site ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish talks
+        run: curl -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/${{ secrets.SECRET_CLOUDFARE_DEPLOYKEY }}"

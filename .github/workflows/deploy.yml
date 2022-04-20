@@ -12,4 +12,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Publish talks
-        run: curl -s -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/${{ secrets.SECRET_CLOUDFARE_DEPLOYKEY }}" | jq -r -e ".success and isempty(.errors)"
+        run: curl -s --header "Accept: application/json" -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/${{ secrets.SECRET_CLOUDFARE_DEPLOYKEY }}" | jq -r -e ".success and isempty(.errors[])"
